@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ryl Locator Form</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ryl-orange:#FFA62F;
+      --ryl-orange-2:#FF8F1F;
+      --ryl-green:#1F8A5B;
+      --text:#111827;
+      --muted:#6B7280;
+      --card:#ffffff;
+      --border: rgba(17,24,39,.10);
+      --shadow: 0 18px 45px rgba(17,24,39,.08);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(900px 500px at 10% 0%, rgba(255,166,47,.28), rgba(255,166,47,0) 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(31,138,91,.16), rgba(31,138,91,0) 55%),
+        linear-gradient(180deg, rgba(255,255,255,1), rgba(255,255,255,1));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px 16px;
+    }
+    .shell{
+      width:min(860px, 100%);
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      border-radius:var(--radius);
+      padding:28px 22px;
+    }
+    .header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:18px;
+    }
+    h1{
+      margin:0;
+      font-size:22px;
+      letter-spacing:-0.02em;
+      font-weight:600;
+    }
+    .subtitle{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13.5px;
+      line-height:1.35;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(255,166,47,.12);
+      color:#7a3e00;
+      border:1px solid rgba(255,166,47,.25);
+      font-size:12.5px;
+      font-weight:500;
+      white-space:nowrap;
+    }
+    .store-block{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px 14px 10px;
+      background:rgba(255,166,47,.06);
+      margin:14px 0 22px;
+    }
+    .store-title{
+      font-size:13px;
+      color:#7a3e00;
+      font-weight:600;
+      margin:0 0 10px;
+    }
+    .pills{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(17,24,39,.10);
+      background:#fff;
+      font-size:12.5px;
+      color:rgba(17,24,39,.82);
+    }
+    .pill strong{
+      font-weight:600;
+      color:rgba(17,24,39,.92);
+    }
+    .store-actions{
+      margin-top:10px;
+      display:flex;
+      justify-content:flex-end;
+    }
+    .linkbtn{
+      appearance:none;
+      border:none;
+      background:transparent;
+      color:#7a3e00;
+      font-weight:600;
+      font-size:12.5px;
+      cursor:pointer;
+      padding:6px 8px;
+      border-radius:10px;
+    }
+    .linkbtn:hover{ background:rgba(255,166,47,.14); }
+    .center{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+      padding:4px 0 4px;
+    }
+    .msg{
+      height:18px;
+      font-size:12.5px;
+      color:var(--muted);
+    }
+    .msg.error{ color:#8a2b2b; }
+    .msg.success{ color:var(--ryl-green); }
+    .inputwrap{
+      width:min(620px, 100%);
+      position:relative;
+    }
+    input[type="text"]{
+      width:100%;
+      font-size:15.5px;
+      padding:14px 14px;
+      border-radius:14px;
+      border:1px solid rgba(17,24,39,.14);
+      outline:none;
+      transition: box-shadow .15s ease, border-color .15s ease;
+      background:#fff;
+    }
+    input[type="text"]:focus{
+      border-color: rgba(255,166,47,.75);
+      box-shadow: 0 0 0 4px rgba(255,166,47,.18);
+    }
+    .suggest{
+      position:absolute;
+      left:0; right:0;
+      top: calc(100% + 8px);
+      border-radius:14px;
+      border:1px solid rgba(17,24,39,.12);
+      background:#fff;
+      overflow:hidden;
+      box-shadow: 0 24px 60px rgba(17,24,39,.10);
+      display:none;
+      z-index:10;
+    }
+    .suggest button{
+      width:100%;
+      text-align:left;
+      padding:11px 12px;
+      border:none;
+      background:#fff;
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .suggest button:hover{
+      background:rgba(255,166,47,.10);
+    }
+    .s-left{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      min-width:0;
+    }
+    .s-addr{
+      font-size:13.5px;
+      color:rgba(17,24,39,.9);
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .s-store{
+      font-size:12px;
+      color:var(--muted);
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .s-right{
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      padding-top:1px;
+    }
+    .buttons{
+      width:min(620px, 100%);
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:6px;
+    }
+    .btn{
+      appearance:none;
+      border:none;
+      border-radius:14px;
+      padding:12px 14px;
+      font-size:13.5px;
+      font-weight:600;
+      letter-spacing:0.06em;
+      cursor:pointer;
+      transition: transform .05s ease, filter .15s ease, box-shadow .15s ease;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn.clear{
+      background:#fff;
+      color:rgba(17,24,39,.86);
+      border:1px solid rgba(17,24,39,.14);
+    }
+    .btn.clear:hover{ filter:brightness(0.98); }
+    .btn.check{
+      background: linear-gradient(180deg, var(--ryl-orange), var(--ryl-orange-2));
+      color:#1b1205;
+      box-shadow: 0 14px 30px rgba(255,166,47,.25);
+    }
+    .btn.check:hover{ filter:brightness(1.01); }
+    .result{
+      width:min(620px, 100%);
+      margin-top:10px;
+      border-radius:14px;
+      border:1px solid rgba(17,24,39,.12);
+      padding:12px 12px;
+      font-size:13px;
+      color:rgba(17,24,39,.88);
+      display:none;
+      background:#fff;
+    }
+    .result .line{ margin:4px 0; }
+    .muted{ color:var(--muted); }
+    .ok{ color:var(--ryl-green); font-weight:600; }
+    .warn{ color:#8a2b2b; font-weight:600; }
+    @media (max-width: 520px){
+      .buttons{ grid-template-columns:1fr; }
+      .badge{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="card">
+      <div class="header">
+        <div>
+          <h1>Ryl Locator Form</h1>
+          <p class="subtitle">Enter a store address to confirm it matches our retailer locations.</p>
+        </div>
+        <div class="badge">Powered by Ryl data</div>
+      </div>
+
+      <div class="store-block" id="storeBlock" style="display:none;">
+        <p class="store-title">Before filling an address, we can be found in these stores:</p>
+        <ul class="pills" id="storePills"></ul>
+        <div class="store-actions">
+          <button class="linkbtn" id="toggleStores" style="display:none;">Show all</button>
+        </div>
+      </div>
+
+      <div class="center">
+        <div class="msg" id="topMessage"></div>
+
+        <div class="inputwrap">
+          <input id="userInput" type="text" placeholder="Type an address (ZIP helps)..." autocomplete="off" />
+          <div class="suggest" id="suggestBox"></div>
+        </div>
+
+        <div class="buttons">
+          <button class="btn clear" id="clearBtn">CLEAR</button>
+          <button class="btn check" id="checkBtn">CHECK</button>
+        </div>
+
+        <div class="result" id="resultBox"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const topMessage = document.getElementById("topMessage");
+    const inputEl = document.getElementById("userInput");
+    const suggestBox = document.getElementById("suggestBox");
+    const resultBox = document.getElementById("resultBox");
+
+    let typingTimer = null;
+    let storeExpanded = false;
+    let storesAll = [];
+
+    function setTopMessage(text, type){
+      topMessage.textContent = text || "";
+      topMessage.className = "msg" + (type ? (" " + type) : "");
+    }
+
+    function hideSuggestions(){
+      suggestBox.style.display = "none";
+      suggestBox.innerHTML = "";
+    }
+
+    function showResult(html){
+      resultBox.innerHTML = html;
+      resultBox.style.display = "block";
+    }
+
+    function hideResult(){
+      resultBox.style.display = "none";
+      resultBox.innerHTML = "";
+    }
+
+    function esc(s){
+      return (s || "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    async function fetchStores(){
+      try{
+        const res = await fetch("/api/stores");
+        const stores = await res.json();
+        storesAll = Array.isArray(stores) ? stores : [];
+        renderStores();
+      }catch(e){
+        // silently ignore
+      }
+    }
+
+    function renderStores(){
+      const block = document.getElementById("storeBlock");
+      const pills = document.getElementById("storePills");
+      const toggle = document.getElementById("toggleStores");
+
+      if(!storesAll.length){ block.style.display="none"; return; }
+      block.style.display="block";
+
+      const maxCollapsed = 12;
+      const shown = storeExpanded ? storesAll : storesAll.slice(0, maxCollapsed);
+
+      pills.innerHTML = shown.map(name => `<li class="pill"><strong>${esc(name)}</strong></li>`).join("");
+
+      if(storesAll.length > maxCollapsed){
+        toggle.style.display = "inline-flex";
+        toggle.textContent = storeExpanded ? "Show less" : "Show all";
+      }else{
+        toggle.style.display = "none";
+      }
+
+      toggle.onclick = () => {
+        storeExpanded = !storeExpanded;
+        renderStores();
+      };
+    }
+
+    async function fetchSuggestions(){
+      const q = inputEl.value.trim();
+      hideSuggestions();
+      if(q.length < 3) return;
+
+      try{
+        const res = await fetch(`/api/suggest?q=${encodeURIComponent(q)}`);
+        const items = await res.json();
+        if(!Array.isArray(items) || !items.length) return;
+
+        suggestBox.innerHTML = items.map(item => {
+          const addr = item.address || "";
+          const store = item.store ? `Store: ${item.store}` : "";
+          const conf = (typeof item.confidence === "number") ? `${item.confidence}%` : "";
+          return `
+            <button type="button" data-addr="${esc(addr)}">
+              <div class="s-left">
+                <div class="s-addr">${esc(addr)}</div>
+                <div class="s-store">${esc(store)}</div>
+              </div>
+              <div class="s-right">${esc(conf)}</div>
+            </button>
+          `;
+        }).join("");
+
+        suggestBox.querySelectorAll("button").forEach(btn => {
+          btn.addEventListener("click", () => {
+            inputEl.value = btn.getAttribute("data-addr") || "";
+            hideSuggestions();
+            setTopMessage("", "");
+            hideResult();
+            inputEl.focus();
+          });
+        });
+
+        suggestBox.style.display = "block";
+      }catch(e){
+        // ignore
+      }
+    }
+
+    inputEl.addEventListener("input", () => {
+      setTopMessage("", "");
+      hideResult();
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(fetchSuggestions, 220);
+    });
+
+    inputEl.addEventListener("blur", () => {
+      // small delay so click works
+      setTimeout(() => hideSuggestions(), 150);
+    });
+
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      inputEl.value = "";
+      setTopMessage("", "");
+      hideSuggestions();
+      hideResult();
+      inputEl.focus();
+    });
+
+    document.getElementById("checkBtn").addEventListener("click", async () => {
+      const value = inputEl.value.trim();
+      hideSuggestions();
+      hideResult();
+
+      if(!value){
+        setTopMessage("Please enter an address.", "error");
+        return;
+      }
+
+      setTopMessage("Checking...", "");
+      try{
+        const res = await fetch("/api/check", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ value })
+        });
+        const data = await res.json();
+
+        if(data.status === "success"){
+          setTopMessage("", "");
+          const storeLine = data.store ? `<div class="line"><span class="muted">Store:</span> <strong>${esc(data.store)}</strong></div>` : "";
+          const diffs = (data.minorDifferences || []).length
+            ? `<div class="line"><span class="muted">Minor differences:</span> ${esc(data.minorDifferences.join(", "))}</div>`
+            : `<div class="line"><span class="muted">Minor differences:</span> none</div>`;
+          const conf = (typeof data.confidence === "number") ? `<div class="line"><span class="muted">Confidence:</span> ${esc(String(data.confidence))}%</div>` : "";
+
+          showResult(`
+            <div class="line ok">Address confirmed ✅</div>
+            <div class="line"><span class="muted">Matched address:</span> <strong>${esc(data.matchedAddress || "")}</strong></div>
+            ${storeLine}
+            ${diffs}
+            ${conf}
+          `);
+        }else{
+          setTopMessage("Please try another location or ensure correct spelling", "error");
+          showResult(`<div class="line warn">No match found ❌</div><div class="line muted">Tip: include the 5‑digit ZIP for best accuracy.</div>`);
+        }
+      }catch(e){
+        setTopMessage("Please try another location or ensure correct spelling", "error");
+        showResult(`<div class="line warn">Something went wrong.</div><div class="line muted">Please try again.</div>`);
+      }
+    });
+
+    // init
+    fetchStores();
+  </script>
+</body>
+</html>

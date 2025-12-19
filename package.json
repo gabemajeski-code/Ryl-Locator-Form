@@ -1,0 +1,12 @@
+{
+  "name": "ryl-locator-form",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "lint": "node -c api/check.js"
+  },
+  "dependencies": {
+    "fast-levenshtein": "^3.0.0"
+  }
+}
